@@ -6,6 +6,21 @@ A separate local-first alternative to `song-agent/`. It does not replace or modi
 
 GitHub stores the code; it does not run this agent continuously. **This version needs a computer or server running ACE-Step 1.5**, plus Docker, internet access, and a Google OAuth client file. It cannot start music generation from an Android phone or from GitHub alone. Do not put OAuth files or passwords in the repository.
 
+## Cloud deployment from a phone (Render)
+
+The repository includes `render.yaml` for creating the API service from the Render dashboard. This is **not a one-click complete music generator**: Render hosts the API/queue, but the ACE-Step music model must be running separately on a reachable GPU host with an HTTPS API URL. Do not use a private `localhost` URL for `ACE_STEP_API_URL`.
+
+1. Open [Render Blueprints](https://dashboard.render.com/blueprints) in your phone browser and connect your GitHub account if asked.
+2. Create a Blueprint from this repository and select `render.yaml`. The service configuration uses a **paid** plan and a persistent disk so the queue, generated media, and YouTube OAuth token survive restarts. Review the current price in Render before creating it; this configuration does not deploy or charge anything by itself.
+3. During setup, provide `ACE_STEP_API_URL`: the HTTPS base URL of your separately hosted ACE-Step API. If that server uses an API key, add `ACE_STEP_API_KEY` in the Render service's Environment settings.
+4. Finish the first deployment and copy the service URL shown by Render, for example `https://your-service.onrender.com`.
+5. In Google Cloud Console, configure a **Web application** OAuth client for YouTube Data API v3 and add this exact authorized redirect URI: `https://your-service.onrender.com/oauth/callback` (replace the example hostname with the actual Render URL). Put the complete OAuth client JSON into the Render environment variable `YOUTUBE_CLIENT_SECRETS_JSON`; never put it in GitHub. If you entered it before the final URL was known, update the value and redeploy.
+6. In Render's Environment settings, copy the generated `APP_TOKEN` somewhere safe. Use it as the `X-App-Token` header when calling protected job endpoints. Do not share it publicly.
+7. Open `https://your-service.onrender.com/health` to check service status. Then open `/oauth/start` and complete Google authorization. The initial upload visibility is private. Check the health response for `ace_step_reachable: true` before queuing one test job.
+8. Keep `YOUTUBE_PRIVACY_STATUS=private` until you review the first upload in YouTube Studio.
+
+**Important limits:** Render does not provide the ACE-Step GPU model as part of this blueprint. A separate GPU host may cost money. The API service alone cannot generate music if that model endpoint is unavailable. This setup has not been deployed or end-to-end tested yet.
+
 ## Quick start (computer with Docker)
 
 1. Install and start Docker Desktop/Engine.
