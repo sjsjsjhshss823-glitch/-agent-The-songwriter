@@ -78,10 +78,20 @@ def make_job(language="mixed"):
     return prompt, lang_name, lang_code, style, theme
 
 def oauth_flow():
+    # Cloud hosts can supply the OAuth client JSON as a secret environment variable.
+    client_json = os.getenv("YOUTUBE_CLIENT_SECRETS_JSON", "").strip()
+    if client_json:
+        CLIENT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        CLIENT_FILE.write_text(client_json, encoding="utf-8")
+        try: CLIENT_FILE.chmod(0o600)
+        except OSError: pass
     if not CLIENT_FILE.exists():
-        raise RuntimeError(f"YouTube OAuth client JSON missing at {CLIENT_FILE}. Add it locally; never commit it.")
+        raise RuntimeError(f"YouTube OAuth client JSON missing at {CLIENT_FILE}. Add it as a secret; never commit it.")
+    redirect_uri = os.getenv("YOUTUBE_REDIRECT_URI") or (
+        os.getenv("RENDER_EXTERNAL_URL", "http://localhost:8000").rstrip("/") + "/oauth/callback"
+    )
     return Flow.from_client_secrets_file(str(CLIENT_FILE), scopes=SCOPES,
-        redirect_uri=os.getenv("YOUTUBE_REDIRECT_URI","http://localhost:8000/oauth/callback"))
+        redirect_uri=redirect_uri)
 
 def youtube_service():
     creds = None
