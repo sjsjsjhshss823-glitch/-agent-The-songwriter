@@ -1,0 +1,36 @@
+# Render Blueprint for the SongFlow API.
+# This uses a paid web-service plan because the app needs persistent storage
+# for the queue, YouTube OAuth token, and generated media.
+services:
+  - type: web
+    name: songflow-songwriter
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    disk:
+      name: songflow-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: APP_TOKEN
+        generateValue: true
+      - key: ACE_STEP_API_URL
+        sync: false
+      - key: YOUTUBE_CLIENT_SECRETS_JSON
+        sync: false
+      - key: DATABASE_PATH
+        value: /var/data/jobs.sqlite3
+      - key: MEDIA_DIR
+        value: /var/data/media
+      - key: YOUTUBE_CLIENT_SECRETS_FILE
+        value: /var/data/client_secret.json
+      - key: YOUTUBE_TOKEN_FILE
+        value: /var/data/youtube-token.json
+      - key: YOUTUBE_PRIVACY_STATUS
+        value: private
+      - key: DAILY_TARGET
+        value: "1"
