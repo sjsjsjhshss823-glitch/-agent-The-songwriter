@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17152b">
+<title>SongFlow Free — יצירת שירים מהטלפון</title>
+<style>
+:root{color-scheme:dark;--bg:#11101d;--panel:#1d1b30;--text:#f7f5ff;--muted:#c2bddb;--accent:#a78bfa;--line:#3a3557}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#17152b,#101722);color:var(--text);font:16px/1.6 system-ui,-apple-system,sans-serif}
+main{max-width:760px;margin:auto;padding:22px 16px 50px}.tag{color:#c4b5fd;font-weight:700;letter-spacing:.04em}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:16px 0}h1{font-size:clamp(28px,7vw,42px);line-height:1.15;margin:.35em 0}h2{font-size:21px;margin-top:0}p,.muted{color:var(--muted)}label{display:block;font-weight:650;margin:14px 0 5px}input,select,textarea{width:100%;border-radius:10px;border:1px solid #514a73;background:#121122;color:var(--text);padding:12px;font:inherit}textarea{min-height:120px;resize:vertical}button,.button{display:block;width:100%;border:0;border-radius:12px;background:var(--accent);color:#171326;font-weight:800;font-size:16px;padding:13px 16px;margin:12px 0;text-align:center;text-decoration:none;cursor:pointer}.secondary{background:#302a4b;color:var(--text);border:1px solid #5a507b}.steps{padding-right:22px}.steps li{margin:9px 0}.notice{border-right:4px solid #fbbf24;padding:10px 12px;background:#29243a;border-radius:8px}.small{font-size:13px}.status{min-height:24px;color:#c4b5fd}
+</style>
+</head>
+<body><main>
+<div class="tag">SONGFLOW FREE · PHONE MODE</div>
+<h1>יוצרים שיר מהטלפון 🎵</h1>
+<p>עמוד עזר חינמי בעברית. הוא בונה לך תיאור לשיר ופותח את מחולל המוזיקה הציבורי. אין כאן שרת בתשלום, ואין העלאה אוטומטית ליוטיוב.</p>
+<section class="panel">
+<h2>1. בנה את השיר שלך</h2>
+<label for="topic">על מה השיר?</label><input id="topic" value="תקווה והתחלה חדשה אחרי תקופה קשה" maxlength="300">
+<label for="lang">שפת השירה</label><select id="lang"><option>Hebrew (עברית)</option><option>English</option><option>Arabic</option><option>Spanish</option><option>Instrumental (ללא שירה)</option></select>
+<label for="style">סגנון מוזיקלי</label><select id="style"><option>cinematic pop ballad, piano and strings</option><option>uplifting Israeli pop with warm piano and drums</option><option>acoustic folk with fingerpicked guitar</option><option>energetic dance pop with original synths</option><option>lo-fi soul with mellow keys</option><option>soft rock with live-band feel</option><option>Afrobeat-inspired pop with original rhythm</option></select>
+<label for="mood">אווירה</label><select id="mood"><option>emotional and hopeful</option><option>joyful and energetic</option><option>calm and intimate</option><option>epic and cinematic</option><option>romantic and tender</option></select>
+<label for="extra">פרטים נוספים (לא חובה)</label><textarea id="extra" placeholder="למשל: פזמון קליט, קול נשי, קצב בינוני..."></textarea>
+<button id="build">בנה תיאור לשיר</button>
+<label for="prompt">התיאור להעתקה למחולל</label><textarea id="prompt" readonly></textarea>
+<button class="secondary" id="copy">העתק תיאור</button>
+<div class="status" id="status" aria-live="polite"></div>
+<a class="button" href="https://huggingface.co/spaces/ACE-Step/Ace-Step-v1.5" target="_blank" rel="noopener">פתח את מחולל ACE-Step הרשמי ↗</a>
+<p class="small">אם המחולל עמוס, לא זמין או מבקש משאבים שאינם פנויים, צריך לנסות שוב מאוחר יותר. הזמינות החינמית אינה מובטחת.</p>
+</section>
+<section class="panel">
+<h2>2. איך משתמשים</h2>
+<ol class="steps">
+<li>לחץ על "בנה תיאור לשיר", ואז על "העתק תיאור".</li>
+<li>פתח את מחולל ACE-Step הרשמי והדבק את התיאור בשדה הטקסט/ההנחיה המתאים. אם הממשק מבקש מילים, אפשר לכתוב מילים מקוריות משלך.</li>
+<li>הפעל יצירה והמתן. אם נוצר קובץ אודיו, השתמש באפשרות ההורדה בממשק.</li>
+<li>להעלאה ידנית: פתח את <a href="https://studio.youtube.com/" target="_blank" rel="noopener">YouTube Studio</a> בדפדפן או באפליקציה והעלה את הקובץ לפי ההנחיות.</li>
+</ol>
+<div class="notice"><strong>חשוב:</strong> העמוד הזה אינו מריץ את מודל המוזיקה בעצמו ואינו מפעיל את הסוכן ברקע. יצירת מוזיקה והעלאה אוטומטית מתוך המאגר דורשות שירות ריצה ומודל נגיש; לא הוגדרו כאן שירותים בתשלום.</div>
+</section>
+<footer class="muted small">קוד פתוח · ללא מפתחות API בעמוד · אל תדביק סיסמאות או פרטי OAuth כאן.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function build(){const topic=$('topic').value.trim()||'an original story';const lang=$('lang').value;const style=$('style').value;const mood=$('mood').value;const extra=$('extra').value.trim();$('prompt').value='Create a fully original song in '+lang+'. Theme: '+topic+'. Musical style: '+style+'. Mood: '+mood+'. Use an original melody and lyrics, a clear verse and memorable chorus, polished production, and a natural ending. Do not imitate any named artist, existing song, recording, or recognizable melody.'+(extra?' Additional direction: '+extra+'.':'');$('status').textContent='התיאור מוכן. אפשר להעתיק אותו למחולל.'}
+$('build').addEventListener('click',build);$('copy').addEventListener('click',async()=>{if(!$('prompt').value)build();try{await navigator.clipboard.writeText($('prompt').value);$('status').textContent='הועתק ללוח.'}catch(e){$('prompt').focus();$('prompt').select();$('status').textContent='סמן את הטקסט והעתק ידנית.'}});build();
+</script></body></html>
