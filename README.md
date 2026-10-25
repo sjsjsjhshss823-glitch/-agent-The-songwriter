@@ -1,12 +1,16 @@
 # SongFlow Free — local AI songs to YouTube
 
+> **Phone-first, free-only path:** open [`phone-free.html`](./phone-free.html) for a Hebrew mobile helper, or read [`FREE_PHONE_GUIDE.md`](./FREE_PHONE_GUIDE.md). It builds a music prompt and links to the official public ACE-Step demo. This path can help create a song manually, but does **not** run the background agent or upload to YouTube automatically. Public demo availability and free quotas are not guaranteed.
+
+**No paid service was created.** Do not deploy the Render blueprint below if you require a strictly free setup.
+
 A separate local-first alternative to `song-agent/`. It does not replace or modify SafeGuard. It uses the open-source ACE-Step 1.5 music model through its local HTTP API, creates a simple MP4 cover video, and uploads through your own YouTube OAuth authorization.
 
 ## Important: what must exist before it can run
 
 GitHub stores the code; it does not run this agent continuously. **This version needs a computer or server running ACE-Step 1.5**, plus Docker, internet access, and a Google OAuth client file. It cannot start music generation from an Android phone or from GitHub alone. Do not put OAuth files or passwords in the repository.
 
-## Cloud deployment from a phone (Render)
+## Optional paid cloud deployment (Render) — NOT part of the free-only path
 
 The repository includes `render.yaml` for creating the API service from the Render dashboard. This is **not a one-click complete music generator**: Render hosts the API/queue, but the ACE-Step music model must be running separately on a reachable GPU host with an HTTPS API URL. Do not use a private `localhost` URL for `ACE_STEP_API_URL`.
 
