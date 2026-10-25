@@ -10,8 +10,8 @@ GitHub stores the code; it does not run this agent continuously. **This version 
 
 1. Install and start Docker Desktop/Engine.
 2. Install ACE-Step 1.5 using its official instructions and start its API on the host at `http://localhost:8001`. Confirm `http://localhost:8001/health` responds. Model downloads and generation need suitable hardware; GPU requirements depend on the selected model.
-3. In Google Cloud Console, enable **YouTube Data API v3**, configure OAuth consent, and create an OAuth client. Download its JSON and save it locally as `song-agent-free/secrets/client_secret.json`. For a Web client, configure redirect URI `http://localhost:8000/oauth/callback`; follow Google's current guidance for your OAuth client type.
-4. In `song-agent-free/`, copy `.env.example` to `.env`. Keep `YOUTUBE_PRIVACY_STATUS=private` for the first test. Change the sample `APP_TOKEN` to a long random secret.
+3. In Google Cloud Console, enable **YouTube Data API v3**, configure OAuth consent, and create an OAuth client. Download its JSON and save it locally as `secrets/client_secret.json`. For a Web client, configure redirect URI `http://localhost:8000/oauth/callback`; follow Google's current guidance for your OAuth client type.
+4. In `./`, copy `.env.example` to `.env`. Keep `YOUTUBE_PRIVACY_STATUS=private` for the first test. Change the sample `APP_TOKEN` to a long random secret.
 5. Run `bash start-linux-macos.sh` on macOS/Linux, or run `start-windows.bat` on Windows after reviewing `.env`. This builds and starts the API container. ACE-Step must be running separately on the same host.
 6. Open [http://localhost:8000/docs](http://localhost:8000/docs), open `GET /oauth/start`, and complete Google authorization.
 7. Check `GET /health`. Queue one private test song using `POST /jobs/fill-today` with JSON body `{"count":1,"language":"English"}`. If `APP_TOKEN` is set, include the `X-App-Token` header.
